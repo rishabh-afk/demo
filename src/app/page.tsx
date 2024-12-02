@@ -1,101 +1,132 @@
+import React from "react";
 import Image from "next/image";
+import { bigShoulders } from "./layout";
+import Banner from "@/components/home/Banner";
+import Upcoming from "@/components/home/Upcoming";
+import WhoWeAre from "@/components/home/WhoWeAre";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { fetchHomePageData } from "@/api/generalApi";
+import Categories from "@/components/home/Categories";
+import ReasonsToShop from "@/components/home/ReasonToShop";
+import ListingByCategory from "@/components/home/ListingByCategory";
 
-export default function Home() {
+export default async function Home() {
+  const {
+    brands,
+    products,
+    categories,
+    homeListing1,
+    homeListing2,
+    homeListing3,
+    banners,
+  } = await fetchHomePageData();
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div>
+      <Banner banners={banners} />
+      <Upcoming products={products} slidesPerViewDesktop={5} />
+      {homeListing1?.product && homeListing1?.product.length > 0 && (
+        <ListingByCategory
+          sectionText={homeListing1.offerName}
+          bannerTitle={homeListing1?.banner_title}
+          bannerImage={homeListing1?.banner_image}
+          products={homeListing1?.product.slice(0, 4)}
+          bannerDesc={homeListing1?.banner_description}
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      )}
+      {homeListing2?.product && homeListing2?.product.length > 0 && (
+        <ListingByCategory
+          sectionText={homeListing2.offerName}
+          bannerTitle={homeListing2?.banner_title}
+          bannerImage={homeListing2?.banner_image}
+          products={homeListing2?.product.slice(0, 4)}
+          bannerDesc={homeListing2?.banner_description}
+        />
+      )}
+      {homeListing3?.product && homeListing3?.product.length > 0 && (
+        <ListingByCategory
+          sectionText={homeListing3.offerName}
+          bannerTitle={homeListing3?.banner_title}
+          bannerImage={homeListing3?.banner_image}
+          products={homeListing3?.product.slice(0, 4)}
+          bannerDesc={homeListing3?.banner_description}
+        />
+      )}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 max-w-9xl mx-auto px-5 py-10">
+        <div className="relative">
+          <Image
+            src="https://demo2.wpopal.com/axetor/wp-content/uploads/2024/01/h1_bn-1.jpg"
+            alt="Image"
+            width={100}
+            height={100}
+            className="object-cover w-full aspect-square md:h-[75vh] rounded-lg"
+            priority
+            unoptimized
+          />
+          <div
+            className={`absolute inset-0 flex flex-col justify-between p-5 md:p-10 ${bigShoulders.className}`}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <div className="text-left pl-12 md:pl-14 relative">
+              <div className="absolute tracking-widest md:text-lg top-10 md:top-12 -rotate-90 text-pink-600 font-bold -left-7">
+                SALE NOW ON
+              </div>
+              <p className="text-7xl md:text-8xl text-stroke font-extrabold text-lime-500 leading-none">
+                15% OFF
+              </p>
+              <p className="text-2xl font-extrabold text-gray-700">
+                ALL SELECTED BRANDS
+              </p>
+            </div>
+            <span className="relative font-sans uppercase text-sm font-semibold w-fit mt-8 flex bg-white text-black space-x-2 items-center border rounded-full cursor-pointer hover:bg-primary hover:border-primary border-black/10 py-4 pl-28 pr-4 overflow-hidden group">
+              <span className="absolute whitespace-nowrap left-4 w-full transition-all duration-300 ease-in-out transform group-hover:translate-y-[-100%] group-hover:opacity-0 opacity-100 translate-y-0">
+                SHOP NOW
+              </span>
+              <span className="absolute whitespace-nowrap left-2 w-full transition-all duration-300 ease-in-out transform group-hover:translate-y-0 group-hover:opacity-100 opacity-0 translate-y-[100%]">
+                SHOP NOW
+              </span>
+              <FaArrowRightLong className="ml-2" />
+            </span>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <div className="relative">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src="https://demo2.wpopal.com/axetor/wp-content/uploads/2024/01/h1_bn-2.jpg"
+            alt="Image"
+            width={100}
+            height={100}
+            className="object-cover w-full aspect-square md:h-[75vh] rounded-lg"
+            priority
+            unoptimized
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <div className="absolute inset-0 bg-gradient-to-r from-black rounded-lg to-transparent transition-all duration-500 ease-linear opacity-70 group-hover:opacity-40"></div>
+          <div
+            className={`absolute inset-0 flex flex-col justify-between p-5 md:p-10 ${bigShoulders.className}`}
+          >
+            <div className="text-left uppercase pl-14 relative">
+              <div className="absolute tracking-widest text-lg top-12 -rotate-90 text-[#a9bc41] font-bold -left-7">
+                special offer
+              </div>
+              <p className="text-4xl font-extrabold text-white leading-none">
+                high visibility <br /> workwear
+              </p>
+              <p className="text-2xl mt-5 font-extrabold text-white">
+                start from <span className="text-[#a9bc41]">$299 </span>
+              </p>
+            </div>
+            <span className="relative font-sans uppercase text-sm font-semibold w-fit mt-8 flex bg-white text-black space-x-2 items-center border rounded-full cursor-pointer hover:bg-primary hover:border-primary border-black/10 py-4 pl-28 pr-4 overflow-hidden group">
+              <span className="absolute whitespace-nowrap left-4 w-full transition-all duration-300 ease-in-out transform group-hover:translate-y-[-100%] group-hover:opacity-0 opacity-100 translate-y-0">
+                SHOP NOW
+              </span>
+              <span className="absolute whitespace-nowrap left-2 w-full transition-all duration-300 ease-in-out transform group-hover:translate-y-0 group-hover:opacity-100 opacity-0 translate-y-[100%]">
+                SHOP NOW
+              </span>
+              <FaArrowRightLong className="ml-2" />
+            </span>
+          </div>
+        </div>
+      </div>
+      <ReasonsToShop />
+      <Categories categories={categories} />
+      <WhoWeAre brands={brands} />
     </div>
   );
 }
